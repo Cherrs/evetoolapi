@@ -1,4 +1,4 @@
-﻿using evetool.core.model;
+﻿using evetool.core.entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace evetool.api.Model
 {
+    /// <summary>
+    /// 计算价格请求模型
+    /// </summary>
     public class ExpressGetPriceRequest
     {
         public string text { get; set; }

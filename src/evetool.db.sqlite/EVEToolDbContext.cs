@@ -1,4 +1,4 @@
-﻿using evetool.core.model;
+﻿using evetool.core.entity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,9 +21,15 @@ namespace evetool.db.sqlite
         /// </summary>
         public DbSet<ExpressFeeOption> ExpressFeeOptions { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlite("Data Source=db.db");
+        //}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=db.db");
+            modelBuilder.Entity<ExpressFeeOption>()
+                .HasOne(b => b.Care)
+                .WithMany(x=>x.ExpressFeeOption);
         }
     }
 }

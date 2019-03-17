@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using evetool.core.model;
+using evetool.core.entity;
+using evetool.db.sqlite;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace evetool.core.Express
 {
@@ -14,7 +16,7 @@ namespace evetool.core.Express
 
         public ExpressFeeOption GetExpressOption(int id)
         {
-            this.DbContext.
+            return this.DbContext.ExpressFeeOptions.Where(x => x.ID == id).Include(x=>x.Care).SingleOrDefault();
         }
     }
 }

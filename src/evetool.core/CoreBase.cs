@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using evetool.db.sqlite;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,8 +8,8 @@ namespace evetool.core
 {
     public abstract class CoreBase
     {
-        public DbContext DbContext { get; set; }
-        public CoreBase(DbContext db)
+        public EVEToolDbContext DbContext { get; set; }
+        public CoreBase(EVEToolDbContext db)
         {
             DbContext = db;
         }

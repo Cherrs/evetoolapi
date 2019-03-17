@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\evetool.core\evetool.core.csproj" />
+    <ProjectReference Include="..\evetool.entity\evetool.entity.csproj" />
   </ItemGroup>
 
 </Project>

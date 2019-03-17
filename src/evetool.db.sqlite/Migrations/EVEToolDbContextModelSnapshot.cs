@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using evetool.db.sqlite;
 
 namespace evetool.db.sqlite.Migrations
 {
@@ -15,7 +16,7 @@ namespace evetool.db.sqlite.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.2.3-servicing-35854");
 
-            modelBuilder.Entity("evetool.core.model.ExpressCareOption", b =>
+            modelBuilder.Entity("evetool.core.entity.ExpressCareOption", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
@@ -29,7 +30,7 @@ namespace evetool.db.sqlite.Migrations
                     b.ToTable("ExpressCareOptions");
                 });
 
-            modelBuilder.Entity("evetool.core.model.ExpressFeeOption", b =>
+            modelBuilder.Entity("evetool.core.entity.ExpressFeeOption", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
@@ -53,10 +54,10 @@ namespace evetool.db.sqlite.Migrations
                     b.ToTable("ExpressFeeOptions");
                 });
 
-            modelBuilder.Entity("evetool.core.model.ExpressFeeOption", b =>
+            modelBuilder.Entity("evetool.core.entity.ExpressFeeOption", b =>
                 {
-                    b.HasOne("evetool.core.model.ExpressCareOption", "Care")
-                        .WithMany()
+                    b.HasOne("evetool.core.entity.ExpressCareOption", "Care")
+                        .WithMany("ExpressFeeOption")
                         .HasForeignKey("CareID");
                 });
 #pragma warning restore 612, 618

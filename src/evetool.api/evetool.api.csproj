@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\evetool.core\evetool.core.csproj" />
     <ProjectReference Include="..\evetool.db.sqlite\evetool.db.sqlite.csproj" />
+    <ProjectReference Include="..\evetool.entity\evetool.entity.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
 using System.Text;
-using evetool.core.model;
+using evetool.core.entity;
+using evetool.core.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace evetool.core.Express
@@ -44,6 +47,48 @@ namespace evetool.core.Express
                 }
             }
             return 0;
+        }
+
+        public GetPostFeeFromGameResult GetPostFeeFromGame(string text)
+        {
+            HttpClient client = new HttpClient();
+            var textarr = text.Split(new string[] { Environment.NewLine,"\n" }, StringSplitOptions.RemoveEmptyEntries);
+            StringBuilder quarytxt = new StringBuilder();
+            foreach (var i in textarr)
+            {
+                int count;
+                var row = i.Split(new string[] { "\t" }, StringSplitOptions.None);
+                try
+                {
+
+                    count = int.Parse(row[2], System.Globalization.NumberStyles.AllowThousands);
+                }
+                catch
+                {
+                    if (string.IsNullOrEmpty(row[1]))
+                        count = 1;
+                    else
+                        count = int.Parse(row[1], System.Globalization.NumberStyles.AllowThousands);
+                }
+
+                var type = EVEData.ShipNames.Where(x => x.Value.name.zh == row[0].Trim() || x.Value.name.en == row[0].Trim());
+                quarytxt.Append(type.FirstOrDefault().Value.name.en);
+                quarytxt.Append(" ");
+                quarytxt.Append(count);
+                quarytxt.Append("\r\n");
+            }
+
+            var priceresult = client.PostAsync("https://evepraisal.com/appraisal.json?market=jita", new StringContent(quarytxt.ToString())).Result;
+            var price = priceresult.Content.ReadAsAsync<evepraisalResult>().Result;
+            var result = new GetPostFeeFromGameResult
+            {
+                BuyPrice = price.appraisal.totals.buy,
+                SellPrice = price.appraisal.totals.sell,
+                Volume = price.appraisal.totals.volume,
+            };
+            result.PostFee = GetPostFee(result.Volume);
+            result.CarePrice = GetCarePrice(result.SellPrice);
+            return result;
         }
 
     }

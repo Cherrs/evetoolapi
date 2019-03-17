@@ -15,5 +15,7 @@ namespace evetool.core.entity
         /// 保险比例
         /// </summary>
         public double Ratio { get; set; }
+
+        public List<ExpressFeeOption> ExpressFeeOption { get; set; }
     }
 }

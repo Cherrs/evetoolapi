@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using evetool.db.sqlite;
+using evetool.core;
 
 namespace evetool.api
 {
@@ -27,24 +28,38 @@ namespace evetool.api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddDbContext<EVEToolDbContext>(options => options.UseSqlite("db.db"));
+            // In production, the Angular files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/dist";
+            });
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddJsonOptions(
+            options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+        );
+            services.AddDbContext<EVEToolDbContext>(options => options.UseSqlite("Data Source=db.db"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            EVEData.LoadData("typeIDs.yaml");
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
             }
-            app.UseMvc(routes => {
-                routes.MapRoute("default", "{controller}/{action=Index}/{id?}");
-            });
+            app.UseMvc();
             app.UseSpa(spa =>
             {
-                spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+                spa.Options.SourcePath = "ClientApp";
+                //spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
             });
+
         }
     }
 }
