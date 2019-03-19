@@ -29,10 +29,10 @@ namespace evetool.api
         public void ConfigureServices(IServiceCollection services)
         {
             // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp/dist";
-            });
+            //services.AddSpaStaticFiles(configuration =>
+            //{
+            //    configuration.RootPath = "ClientApp/dist";
+            //});
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(
@@ -45,8 +45,8 @@ namespace evetool.api
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             EVEData.LoadData("typeIDs.yaml");
-            app.UseStaticFiles();
-            app.UseSpaStaticFiles();
+            //app.UseStaticFiles();
+            //app.UseSpaStaticFiles();
 
             if (env.IsDevelopment())
             {
@@ -54,11 +54,11 @@ namespace evetool.api
 
             }
             app.UseMvc();
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "ClientApp";
-                //spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
-            });
+            //app.UseSpa(spa =>
+            //{
+            //    spa.Options.SourcePath = "ClientApp";
+            //    //spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+            //});
 
         }
     }
