@@ -51,14 +51,14 @@ namespace evetool.api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
+                app.UseSpa(spa =>
+                {
+                    spa.Options.SourcePath = "ClientApp";
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+                });
             }
             app.UseMvc();
-            //app.UseSpa(spa =>
-            //{
-            //    spa.Options.SourcePath = "ClientApp";
-            //    //spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
-            //});
+
 
         }
     }
